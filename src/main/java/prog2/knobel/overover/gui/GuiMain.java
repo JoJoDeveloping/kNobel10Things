@@ -46,7 +46,7 @@ public class GuiMain {
         frame.add(addClassButton, c);
         c.gridx = 1;
         frame.add(computeButton, c);
-        frame.setPreferredSize(new Dimension(100, 100));
+        frame.setPreferredSize(new Dimension(400, 400));
         frame.pack();
         frame.setVisible(true);
 
