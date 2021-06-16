@@ -1,5 +1,6 @@
 package prog2.knobel.overover.control.data;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class ClassRep {
@@ -11,6 +12,7 @@ public class ClassRep {
 
     public ClassRep(final String name) {
         this.name = name;
+        this.thisMethods = new HashSet<>();
     }
 
     public String getName() {
