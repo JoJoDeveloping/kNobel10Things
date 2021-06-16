@@ -79,6 +79,7 @@ public class GuiMain {
             for (int i = 0; i < classPanel.getTabCount(); i++) {
                 ClassTab oldOne = (ClassTab) classPanel.getComponentAt(i);
                 oldOne.addClassToList(name);
+
                 newOne.addClassToList(oldOne.getClassName());
             }
         } else {
