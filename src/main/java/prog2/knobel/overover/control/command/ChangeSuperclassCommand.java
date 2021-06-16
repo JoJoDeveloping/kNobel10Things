@@ -25,4 +25,9 @@ public class ChangeSuperclassCommand extends Command {
                ", newSuperClass='" + newSuperClass + '\'' +
                '}';
     }
+
+    @Override
+    public void accept(Visitor v) {
+        v.handle(this);
+    }
 }

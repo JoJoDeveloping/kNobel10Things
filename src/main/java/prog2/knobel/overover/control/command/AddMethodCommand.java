@@ -34,4 +34,10 @@ public class AddMethodCommand extends Command {
                ", argClasses=" + argClasses +
                '}';
     }
+
+
+    @Override
+    public void accept(Visitor v) {
+        v.handle(this);
+    }
 }

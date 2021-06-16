@@ -8,6 +8,7 @@ import prog2.knobel.overover.control.command.ComputeCommand;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,12 +16,13 @@ import java.util.stream.Collectors;
 
 public class GuiMain {
 
-    private JTabbedPane classPanel;
-    private JButton addClassButton, computeButton;
-    private JFrame frame;
-    private Control control;
+    private final JTabbedPane classPanel;
+    private final JButton addClassButton;
+    private final JButton computeButton;
+    private final JFrame frame;
+    private final Control control;
 
-    private Set<String> classes;
+    private final Set<String> classes;
 
     public GuiMain() {
         control = new Control();
@@ -55,6 +57,11 @@ public class GuiMain {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    public static void main(String[] args) {
+        new GuiMain();
+
+    }
+
     private void compute(final ActionEvent actionEvent) {
         String st = JOptionPane.showInputDialog("Statischer Typ?").trim();
         String dt = JOptionPane.showInputDialog("Dynamischer Typ?").trim();
@@ -62,11 +69,12 @@ public class GuiMain {
 
         int i = ms.indexOf('(');
         String mname = ms.substring(0, i).trim();
-        ms = ms.substring(i + 1, ms.length() - 1);
+        ms = ms.substring(i + 1, ms.length() - 1).trim();
         var args = Arrays.stream(ms.split(","))
                          .map(String::trim)
                          .collect(Collectors.toList());
-
+        if (ms.isBlank())
+            args = new ArrayList<>();
         postMessage(new ComputeCommand(st, dt, mname, args));
     }
 
@@ -101,10 +109,6 @@ public class GuiMain {
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setPreferredSize(new Dimension(350, 150));
         JOptionPane.showMessageDialog(frame, scrollPane, "An Error Has Occurred", JOptionPane.ERROR_MESSAGE);
-    }
-
-    public static void main(String[] args) {
-        new GuiMain();
     }
 
 }

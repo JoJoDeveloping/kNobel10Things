@@ -6,23 +6,23 @@ import prog2.knobel.overover.control.command.ChangeSuperclassCommand;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ClassTab extends JPanel {
 
-    private GuiMain gui;
-    private String classname;
-    private JLabel name;
-    private JComboBox<String> superclass;
-    private JList<String> body;
-    private JButton addMethodButton;
     private final DefaultComboBoxModel<String> model;
     private final DefaultListModel<String> listModel;
+    private final GuiMain gui;
+    private final String classname;
+    private final JLabel name;
+    private final JComboBox<String> superclass;
+    private final JList<String> body;
+    private final JButton addMethodButton;
+    private final boolean broadcastActions = true;
+
 
     public ClassTab(String nn, final GuiMain guiMain) {
         this.gui = guiMain;
@@ -76,7 +76,6 @@ public class ClassTab extends JPanel {
         superclass.addActionListener(this::handleChangeSuperclass);
     }
 
-
     private void handleChangeSuperclass(final ActionEvent actionEvent) {
         String s = (String) superclass.getSelectedItem();
         if (s != null) {
@@ -93,10 +92,12 @@ public class ClassTab extends JPanel {
         String name = JOptionPane.showInputDialog("Gebe Methodensignatur ein (zB foo(A, B))").trim();
         int i = name.indexOf('(');
         String mname = name.substring(0, i).trim();
-        name = name.substring(i + 1, name.length() - 1);
+        name = name.substring(i + 1, name.length() - 1).trim();
         var args = Arrays.stream(name.split(","))
                          .map(String::trim)
                          .collect(Collectors.toList());
+        if (name.isBlank())
+            args = new ArrayList<>();
         name = mname + args.stream().collect(Collectors.joining(", ", "(", ")"));
         gui.postMessage(new AddMethodCommand(classname, mname, args));
         if (this.listModel.contains(name)) {
@@ -105,8 +106,6 @@ public class ClassTab extends JPanel {
             this.listModel.addElement(name);
         }
     }
-
-    private boolean broadcastActions = true;
 
     public void addClassToList(String clazz) {
         if (!clazz.equals(classname))

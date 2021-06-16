@@ -7,6 +7,7 @@ public class ComputeCommand extends Command {
     private final String dynamicType;
     private final String methodName;
     private final List<String> methodArgs;
+
     public ComputeCommand(final String st, final String dt, final String mname, final List<String> args) {
         this.staticType = st;
         this.dynamicType = dt;
@@ -38,5 +39,10 @@ public class ComputeCommand extends Command {
                ", methodName='" + methodName + '\'' +
                ", methodArgs=" + methodArgs +
                '}';
+    }
+
+    @Override
+    public void accept(Visitor v) {
+        v.handle(this);
     }
 }
